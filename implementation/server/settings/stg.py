@@ -1,0 +1,118 @@
+import logging
+from .base import *
+
+DEBUG = True
+DEBUG_TOOLBAR = False
+DEBUG_TEMPLATE = False
+DEV = False
+
+SECRET_KEY = '97818c*w97Zi8a-m^1coRRrmurMI6+q5_kyn*)s@(*_Pk6q423'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'muses',
+        'USER': 'postgres',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': 5432,
+    }
+}
+
+# Elasticsearch configuration
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200',
+        'timeout': 30,
+        # 'user': 'elastic',
+        # 'password': 'changeme',
+        # 'http_auth': 'elastic:changeme',
+    },
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.aincient.org'
+EMAIL_HOST_USER = 'tool@aincient.org'
+EMAIL_HOST_PASSWORD = '}fbzE)gRmR~k'
+DEFAULT_FROM_EMAIL = 'cleo@aincient.org'
+EMAIL_PORT = 2525
+
+logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'stg-default',
+#     },
+#     'throttling': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'stg-throttling',
+#     },
+# }
+
+# ***********************************************************************
+# ***************************** Mollie **********************************
+# ***********************************************************************
+
+MOLLIE_API_KEY = 'live_DnTdBmndjeJCtJWxU8fUTdQzMmD6AS'
+SITE_DOMAIN = 'https://cleo.aincient.org'  # Fill in for correct env
+GOOGLE_API_KEY = 'AIzaSyBvb_-I_c5EbN5XEC5Be9gQdxengk9QtwQ'
+
+# ***********************************************************************
+# ************************ muses/cleo (this app) ************************
+# ***********************************************************************
+
+# Muses config
+MUSES_CONFIG = {
+    'importers': {
+        'rmo_nl': {
+            'url': 'http://api.rmo.nl:17521/action=get&command=search&query=*egypt*&range=1-1000000&fields=*',  # NOQA
+            'tmp_dir': PROJECT_DIR(
+                os.path.join('..', '..', 'import', 'rmo_nl')
+            ),
+        },
+        'brooklynmuseum_org': {
+            'base_url': 'https://www.brooklynmuseum.org/',
+            'object_list_url': '/api/v2/object/?collection_id=5&limit=35',
+            'geographical_location_list_url': '/api/v2/geographical-location/'
+                                              '?limit=35',
+            'object_images_url': '/api/v2/object/{}/image/',
+            'api_key': '54H6xFITODnhZCrWswf8SCKS5qK4ik6H',
+            'tmp_dir': PROJECT_DIR(
+                os.path.join('..', '..', 'import', 'brooklynmuseum_org')
+            ),
+        },
+        'thewalters_org': {
+            'base_url': 'http://api.thewalters.org/',
+            'object_list_url': '/v1/objects.json?creator=Egyptian',
+            'object_detail_url': '/v1/objects/{}.json',
+            'object_images_url': '/v1/objects/{}/images.json',
+            'api_key':
+                '58fx6wTx46Z1Vu9Cll86k3YfjH6Xti9amdtWKR2WchjbwGvZgXAmlGZ1Z0Eoqw4L',
+            'tmp_dir': PROJECT_DIR(
+                os.path.join('..', '..', 'import', 'thewalters_org')
+            ),
+        },
+        'metmuseum_org': {
+            'object_list_url': 'https://github.com/metmuseum/openaccess/raw/master/MetObjects.csv',  # NOQA
+            'object_images_url': 'http://www.metmuseum.org/api/Collection/additionalImages?crdId={}&page=1&perPage=10',  # NOQA
+            'tmp_dir': PROJECT_DIR(
+                os.path.join('..', '..', 'import', 'metmuseum_org')
+            ),
+        },
+    },
+    'classification': {
+        'naive_classification': {
+            'model_path': os.path.join(
+                BASE_DIR,
+                '..',
+                '..',
+                'src',
+                'muses',
+                'naive_classification',
+                'models',
+                'new_model_f1_finetuned_2_trained.h5'
+            )
+        },
+    },
+}

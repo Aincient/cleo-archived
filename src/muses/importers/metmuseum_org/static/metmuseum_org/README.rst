@@ -1,0 +1,1 @@
+The 404 image is used to detect and ignore broken images.

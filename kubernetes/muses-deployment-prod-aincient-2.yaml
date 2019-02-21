@@ -1,0 +1,114 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: muses-production
+  name: muses-production
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: muses-production
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: muses-production
+    spec:
+      containers:
+      - image: redis:3.2-alpine
+        imagePullPolicy: Always
+        name: redis
+        resources: {}
+        volumeMounts:
+        - mountPath: /data
+          name: redisdata
+      - env:
+        - name: PGDATA
+          valueFrom:
+            configMapKeyRef:
+              key: PGDATA
+              name: muses-production-config
+        image: gcr.io/gothic-depth-160720/muses-posgis-db:v1
+        imagePullPolicy: Always
+        name: muses-posgis-db
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: postgresdata-prod
+      - command:
+        - /app/django-entrypoint.sh
+        env:
+        - name: DJANGO_SETTINGS_MODULE
+          valueFrom:
+            configMapKeyRef:
+              key: DJANGO_SETTINGS_MODULE
+              name: muses-production-config
+        image: eu.gcr.io/gothic-depth-160720/muses-backend-app:v72
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /pages/en/
+            port: 8000
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: muses-backend-app
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /pages/en/
+            port: 8000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        volumeMounts:
+        - mountPath: /app/implementation/media
+          name: django-media-1-prod
+          subPath: media
+        - mountPath: /app/implementation/import
+          name: django-media-1-prod
+          subPath: import
+        - mountPath: /app/implementation/datasets
+          name: django-media-1-prod
+          subPath: datasets
+        - mountPath: /app/implementation/static
+          name: django-media-1-prod
+          subPath: static
+      - env:
+        - name: ES_JAVA_OPTS
+          valueFrom:
+            configMapKeyRef:
+              key: ES_JAVA_OPTS
+              name: muses-production-config
+        image: gcr.io/gothic-depth-160720/muses-es-app:v2
+        imagePullPolicy: Always
+        name: muses-es-app
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: postgresdata-prod
+        persistentVolumeClaim:
+          claimName: postgresdata-prod-claim
+      - name: django-media-1-prod
+        persistentVolumeClaim:
+          claimName: django-media-1-prod-claim
+      - name: redisdata
+        persistentVolumeClaim:
+          claimName: redisdata-claim

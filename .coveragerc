@@ -1,0 +1,5 @@
+[run]
+omit =
+    src/muses/tests/*
+    implementation/server/settings/*
+    implementation/server/wsgi.py

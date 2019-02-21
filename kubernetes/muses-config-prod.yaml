@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  DJANGO_SETTINGS_MODULE: settings
+  ES_JAVA_OPTS: -Xms1g -Xmx4g
+  PGDATA: /var/lib/postgresql/data/pgdata
+kind: ConfigMap
+metadata:
+  labels:
+    app: muses-production
+  name: muses-production-config
+  namespace: default

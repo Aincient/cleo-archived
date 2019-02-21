@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: aincient-nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: gcr.io/gothic-depth-160720/muses-nginx-app
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: nginx-config.conf
+        - name: aincient-cert
+          mountPath: /ssl/secret/aincient.crt
+          subPath: aincient.crt
+        - name: aincient-cert
+          mountPath: /ssl/secret/aincient.key
+          subPath: aincient.key
+        - name: letsencrypt
+          mountPath: /etc/letsencrypt
+      volumes:
+        - name: aincient-cert
+          configMap:
+            name: aincient-cert
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+        - name: letsencrypt
+          persistentVolumeClaim:
+            claimName: letsencrypt-claim
+

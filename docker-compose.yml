@@ -1,0 +1,53 @@
+---
+version: '3'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./docker/django/Dockerfile
+    image: eu.gcr.io/gothic-depth-160720/muses-backend-app
+    ports:
+      - 8000:8000
+    links:
+      - postgres:postgres
+      - elasticsearch:elasticsearch
+    entrypoint:
+      - /app/django-entrypoint.sh
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.dev
+    depends_on:
+      - postgres
+      - elasticsearch
+    expose:
+      - 8000
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    image: eu.gcr.io/gothic-depth-160720/muses-posgis-db
+    volumes:
+      - data:/var/lib/postgresql
+    ports:
+      - 5432:5432
+  elasticsearch:
+    build:
+      context: .
+      dockerfile: ./docker/elasticsearch/Dockerfile
+    image: eu.gcr.io/gothic-depth-160720/muses-es-app
+    container_name: elasticsearch
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    image: eu.gcr.io/gothic-depth-160720/muses-nginx-app
+volumes:
+  data:
+  esdata:

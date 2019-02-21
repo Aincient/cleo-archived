@@ -1,0 +1,77 @@
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: postgresdata-prod
+#  labels:
+#    name: postgresdata-prod
+#spec:
+#  capacity:
+#    storage: 500Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  gcePersistentDisk:
+#    pdName: "postgresdata-prod"
+#    fsType: "ext4"
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: django-media-1-prod
+#  labels:
+#    name: django-media-1-prod
+#spec:
+#  capacity:
+#    storage: 500Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  gcePersistentDisk:
+#    pdName: "django-media-1-prod"
+#    fsType: "ext4"
+#---
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: redisdata
+#  labels:
+#    name: redisdata
+#spec:
+#  capacity:
+#    storage: 50Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  gcePersistentDisk:
+#    pdName: "redisdata"
+#    fsType: "ext4"
+#---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgresdata-prod-claim
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: django-media-1-prod-claim
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: redisdata-claim
+  annotations:
+    volume.alpha.kubernetes.io/storage-class: default
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
