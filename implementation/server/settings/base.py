@@ -127,7 +127,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '12345a*a12Aa1a-a^1aaABabcdAB1+a1_abc*)a@(*_Aa1a123'
+SECRET_KEY = 'xxx'
 
 try:
     from .local_settings import DEBUG_TEMPLATE

@@ -1,8 +1,8 @@
 import logging
 from .base import *
 
-MOLLIE_API_KEY = 'test_ncvGbSS4CW9GN7BnRgsSEtuJxKDJnw'
-SECRET_KEY = '97818c*w97Zi8a-m^1coRRrmurMI6+q5_kyn*)s@(*_Pk6q423'
+MOLLIE_API_KEY = 'xxx'
+SECRET_KEY = 'xxx'
 
 
 DATABASES = {
@@ -48,7 +48,7 @@ WEBPACK_LOADER = {
  }
 
 SITE_DOMAIN = 'http://8478c792.ngrok.io'
-GOOGLE_API_KEY = 'AIzaSyBvb_-I_c5EbN5XEC5Be9gQdxengk9QtwQ'
+GOOGLE_API_KEY = 'xxx'
 
 
 # ***********************************************************************
@@ -70,7 +70,7 @@ MUSES_CONFIG = {
             'geographical_location_list_url': '/api/v2/geographical-location/'
                                               '?limit=35',
             'object_images_url': '/api/v2/object/{}/image/',
-            'api_key': '54H6xFITODnhZCrWswf8SCKS5qK4ik6H',
+            'api_key': 'xxx',
             'tmp_dir': PROJECT_DIR(
                 os.path.join('..', '..', 'import', 'brooklynmuseum_org')
             ),

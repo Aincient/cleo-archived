@@ -1,10 +1,12 @@
 FROM python:3.6
 RUN apt-get update
-RUN apt-get install -y python-pip python-dev build-essential libgdal-dev curl
+RUN apt-get install -y python3-pip python-dev build-essential libgdal-dev curl
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+# RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
-RUN nodejs -v && npm -v
+# RUN nodejs -v && npm -v
+RUN node -v && npm -v
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list

@@ -6,7 +6,7 @@ DEBUG_TOOLBAR = False
 DEBUG_TEMPLATE = False
 DEV = False
 
-SECRET_KEY = '97818c*w97Zi8a-m^1coRRrmurMI6+q5_kyn*)s@(*_Pk6q423'
+SECRET_KEY = 'xxx'
 
 DATABASES = {
     'default': {
@@ -54,9 +54,9 @@ logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
 # ***************************** Mollie **********************************
 # ***********************************************************************
 
-MOLLIE_API_KEY = 'live_DnTdBmndjeJCtJWxU8fUTdQzMmD6AS'
+MOLLIE_API_KEY = 'xxx'
 SITE_DOMAIN = 'https://cleo.aincient.org'  # Fill in for correct env
-GOOGLE_API_KEY = 'AIzaSyBvb_-I_c5EbN5XEC5Be9gQdxengk9QtwQ'
+GOOGLE_API_KEY = 'xxx'
 
 # ***********************************************************************
 # ************************ muses/cleo (this app) ************************
